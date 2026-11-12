@@ -2,6 +2,9 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # Этот ключ подходит только для локальной учебной разработки.
 SECRET_KEY = 'django-insecure-acme-project-development-key'
 
@@ -18,12 +21,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'birthday.apps.BirthdayConfig',
     'pages.apps.PagesConfig',
+    'django_bootstrap5',
+    'core.apps.CoreConfig',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -88,3 +95,15 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
+DEFAULT_FROM_EMAIL = 'noreply@acme.local'
+
+LOGIN_REDIRECT_URL = 'pages:homepage'
+
+LOGIN_URL = 'login'
+
+CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
+
+INTERNAL_IPS = ['127.0.0.1']

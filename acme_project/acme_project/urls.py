@@ -1,8 +1,35 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import include, path, reverse_lazy
+from django.views.generic import CreateView
+from debug_toolbar.toolbar import debug_toolbar_urls
+
 
 urlpatterns = [
     path('', include('pages.urls')),
     path('admin/', admin.site.urls),
+    path('auth/registration/',
+        CreateView.as_view(
+            template_name='registration/registration_form.html',
+            form_class=UserCreationForm,
+            success_url=reverse_lazy('login'),
+        ),
+        name='registration',
+    ),
+    path('auth/', include('django.contrib.auth.urls')),
     path('birthday/', include('birthday.urls')),
 ]
+
+urlpatterns += debug_toolbar_urls()
+
+handler404 = 'core.views.page_not_found'
+handler403 = 'core.views.permission_denied'
+handler500 = 'core.views.server_error'
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT,
+    )

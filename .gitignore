@@ -125,6 +125,13 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+# others
 .idea/
 .vscode/
 .DS_Store
+
+# media
+media/
+
+# mail
+sent_emails/
